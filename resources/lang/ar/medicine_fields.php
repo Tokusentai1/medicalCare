@@ -20,4 +20,5 @@ return [
     'Swallow' => 'بلع',
     'drink' => 'شرب',
     'inject' => 'حقن',
+    'medicine_type' => 'أنواع الدواء',
 ];

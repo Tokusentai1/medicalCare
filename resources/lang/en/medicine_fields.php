@@ -20,4 +20,5 @@ return [
     'Swallow' => 'Swallow',
     'drink' => 'Drink',
     'inject' => 'Inject',
+    'medicine_type' => 'Medicine Types',
 ];

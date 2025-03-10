@@ -62,9 +62,9 @@ class EmployeeResource extends Resource
                     ->columnSpan(2),
                 Forms\Components\TextInput::make('first_name')->required()->label(__('employee_fields.first_name')),
                 Forms\Components\TextInput::make('last_name')->required()->label(__('employee_fields.last_name')),
-                FormS\Components\TextInput::make('email')->email()->required()->label(__('employee_fields.email'))->unique('employees', 'email'),
+                FormS\Components\TextInput::make('email')->email()->required()->label(__('employee_fields.email'))->unique('employees', 'email', ignoreRecord: true),
                 Forms\Components\TextInput::make('password')->password()->required()->label(__('employee_fields.password')),
-                Forms\Components\TextInput::make('phone_number')->tel()->required()->label(__('employee_fields.phone_number'))->unique('employees', 'phone_number'),
+                Forms\Components\TextInput::make('phone_number')->tel()->required()->label(__('employee_fields.phone_number'))->unique('employees', 'phone_number', ignoreRecord: true),
                 Forms\Components\Select::make('gender')->options([
                     'male' =>   __('user_fields.male'),
                     'female' =>   __('user_fields.female'),
@@ -161,7 +161,12 @@ class EmployeeResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->visible(
+                        fn($record) =>
+                        auth()->id() !== $record->id &&
+                            !(in_array('hr', auth()->user()->role) && in_array('admin', $record->role))
+                    ),
                 ActivityLogTimelineTableAction::make(__('employee_fields.activity_log'))
                     ->visible(
                         fn() => in_array('admin', Auth::guard('employee')->user()->role),
