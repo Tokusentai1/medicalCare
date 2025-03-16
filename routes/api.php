@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MedicalHistoryController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\OrderController;
@@ -33,3 +34,11 @@ Route::post('buy/{id}', [CartController::class, 'checkout']);
 Route::get('getOrders/{id}', [OrderController::class, 'getOrders']);
 
 Route::get('getOrder/{id}', [OrderController::class, 'getOrder']);
+
+Route::get('categories', [CategoryController::class, 'getAllCategories']);
+
+Route::get('category/{id}', [CategoryController::class, 'getCategory']);
+
+Route::get('searchCategory/{name}', [CategoryController::class, 'searchCategory']);
+
+Route::get('searchMedicine/{name}', [MedicineController::class, 'searchMedicine']);

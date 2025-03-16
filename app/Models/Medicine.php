@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -42,6 +43,11 @@ class Medicine extends Model
     public function carts(): BelongsToMany
     {
         return $this->belongsToMany(Cart::class, 'cart_medicine')->withPivot('quantity');
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 
     public function getActivitylogOptions(): LogOptions

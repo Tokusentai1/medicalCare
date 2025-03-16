@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\CategoryResource\RelationManagers;
 
-use App\Filament\Resources\MedicineResource\Pages;
-use App\Filament\Resources\MedicineResource\RelationManagers;
-use App\Models\Medicine;
 use DiscoveryDesign\FilamentGaze\Forms\Components\GazeBanner;
 use Filament\Forms;
 use Filament\Forms\Components\Wizard;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,40 +14,19 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
-class MedicineResource extends Resource
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\HtmlString;
+
+class MedicinesRelationManager extends RelationManager
 {
-    protected static ?string $model = Medicine::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-beaker';
-
-    protected static ?string $activeNavigationIcon = 'heroicon-s-beaker';
-
-    public static function getNavigationGroup(): ?string
-    {
-        return __('employee_fields.pharmacy');
-    }
-
-    public static function getNavigationLabel(): string
-    {
-        return __('medicine_fields.medicines');
-    }
-
-    public static function getPluralLabel(): string
-    {
-        return __('medicine_fields.medicines');
-    }
+    protected static string $relationship = 'medicines';
 
     public static function getModelLabel(): string
     {
         return __('medicine_fields.medicine');
     }
 
-    public static function getNavigationSort(): ?int
-    {
-        return 3;
-    }
-
-    public static function form(Form $form): Form
+    public function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -70,7 +46,6 @@ class MedicineResource extends Resource
                                 'drink' => __('medicine_fields.drink'),
                                 'inject' => __('medicine_fields.inject'),
                             ])->required()->label(__('medicine_fields.dosage_form')),
-                        Forms\Components\Select::make('category')->required()->relationship('category', 'name')->label(__('category_fields.name')),
                         Forms\Components\FileUpload::make('image')->required()->label(__('medicine_fields.image'))
                             ->disk('images'),
                     ]),
@@ -84,13 +59,21 @@ class MedicineResource extends Resource
                         Forms\Components\DatePicker::make('expire_date')->required()->label(__('medicine_fields.expire_date')),
                         Forms\Components\Toggle::make('rocheta')->required()->label(__('medicine_fields.rocheta')),
                     ]),
-                ])->columnSpanFull()
+                ])->columnSpanFull()->submitAction(new HtmlString(Blade::render(<<<BLADE
+                <x-filament::button
+                    type="submit"
+                    size="sm"
+                >
+                    {{ __('medicine_fields.save') }}
+                </x-filament::button>
+            BLADE)))
             ]);
     }
 
-    public static function table(Table $table): Table
+    public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('brand_name')
             ->columns([
                 Tables\Columns\TextColumn::make('brand_name')->label(__('medicine_fields.brand_name'))->searchable()->icon('heroicon-o-tag')->iconColor('primary')->toggleable(),
                 Tables\Columns\TextColumn::make('composition')->label(__('medicine_fields.composition'))->icon('heroicon-o-pencil')->iconColor('primary')->toggleable(),
@@ -102,7 +85,6 @@ class MedicineResource extends Resource
                 Tables\Columns\TextColumn::make('manufacture_date')->label(__('medicine_fields.manufacture_date'))->icon('heroicon-o-calendar')->iconColor('primary')->date()->toggleable(),
                 Tables\Columns\TextColumn::make('expire_date')->label(__('medicine_fields.expire_date'))->icon('heroicon-o-calendar')->iconColor('primary')->date()->toggleable(),
                 Tables\Columns\TextColumn::make('manufacturer')->label(__('medicine_fields.manufacturer'))->icon('heroicon-o-building-office')->iconColor('primary')->searchable()->toggleable(),
-                Tables\Columns\TextColumn::make('category.name')->label(__('category_fields.name'))->searchable()->toggleable(),
                 Tables\Columns\IconColumn::make('rocheta')
                     ->label(__('medicine_fields.rocheta'))
                     ->boolean()
@@ -111,31 +93,21 @@ class MedicineResource extends Resource
                     ->toggleable(),
             ])
             ->filters([])
+            ->headerActions([
+                Tables\Actions\CreateAction::make()->modalFooterActions(fn() => []),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                ActivityLogTimelineTableAction::make(__('employee_fields.activity_log'))->visible(
-                    fn() => in_array('admin', Auth::guard('employee')->user()->role),
-                ),
+                ActivityLogTimelineTableAction::make(__('employee_fields.activity_log'))
+                    ->visible(
+                        fn() => in_array('admin', Auth::guard('employee')->user()->role),
+                    ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [];
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListMedicines::route('/'),
-            'create' => Pages\CreateMedicine::route('/create'),
-            'edit' => Pages\EditMedicine::route('/{record}/edit'),
-        ];
     }
 }

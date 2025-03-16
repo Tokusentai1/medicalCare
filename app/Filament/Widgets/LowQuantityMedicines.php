@@ -34,6 +34,7 @@ class LowQuantityMedicines extends BaseWidget
                 Tables\Columns\TextColumn::make('manufacture_date')->label(__('medicine_fields.manufacture_date'))->icon('heroicon-o-calendar')->iconColor('primary')->date(),
                 Tables\Columns\TextColumn::make('expire_date')->label(__('medicine_fields.expire_date'))->icon('heroicon-o-calendar')->iconColor('primary')->date(),
                 Tables\Columns\TextColumn::make('manufacturer')->label(__('medicine_fields.manufacturer'))->icon('heroicon-o-building-office')->iconColor('primary'),
+                Tables\Columns\TextColumn::make('category.name')->label(__('category_fields.name'))->searchable()->toggleable(),
                 Tables\Columns\IconColumn::make('rocheta')
                     ->label(__('medicine_fields.rocheta'))
                     ->boolean()

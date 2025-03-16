@@ -21,4 +21,5 @@ return [
     'drink' => 'شرب',
     'inject' => 'حقن',
     'medicine_type' => 'أنواع الدواء',
+    'save' => 'اضافة',
 ];

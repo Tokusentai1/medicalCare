@@ -59,4 +59,34 @@ class MedicineController extends Controller
             ]
         );
     }
+
+    public function searchMedicine(string $name)
+    {
+        $medicine = Medicine::where('brand_name', 'like', '%' . $name . '%')->get();
+
+        if ($medicine->isEmpty()) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "statusCode" => 400,
+                    "error" => "There is no Medicine with this name " . $name,
+                    "result" => null
+                ]
+            );
+        };
+
+        $medicine->map(function ($medicine) {
+            $medicine->image = url('storage/images/' . $medicine->image);
+            return $medicine;
+        });
+
+        return response()->json(
+            [
+                "success" => true,
+                "statusCode" => 200,
+                "error" => null,
+                "result" => $medicine
+            ]
+        );
+    }
 }

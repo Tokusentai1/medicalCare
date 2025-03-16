@@ -21,4 +21,5 @@ return [
     'drink' => 'Drink',
     'inject' => 'Inject',
     'medicine_type' => 'Medicine Types',
+    'save' => 'Submit',
 ];

@@ -29,6 +29,7 @@ class CreateMedicine extends CreateRecord
                         'inject' => __('medicine_fields.inject'),
                     ])->required()->label(__('medicine_fields.dosage_form')),
                 Forms\Components\FileUpload::make('image')->disk('images')->required()->label(__('medicine_fields.image')),
+                Forms\Components\Select::make('category')->required()->relationship('category', 'name')->label(__('category_fields.name')),
             ]),
             Wizard\Step::make(__('medicine_fields.step2'))->schema([
                 Forms\Components\TextInput::make('price')->required()->label(__('medicine_fields.price'))->numeric()->prefix('SYP'),
