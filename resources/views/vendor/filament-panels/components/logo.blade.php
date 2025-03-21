@@ -1,0 +1,1 @@
+<img src="{{asset('logo/logo.png')}}" alt="Medical Care" class="h-16">
