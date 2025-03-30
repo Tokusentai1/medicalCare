@@ -50,6 +50,8 @@ class MedicineResource extends Resource
         return 3;
     }
 
+    protected static ?string $recordTitleAttribute = 'brand_name';
+
     public static function form(Form $form): Form
     {
         return $form

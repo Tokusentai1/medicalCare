@@ -42,6 +42,8 @@ class UserResource extends Resource
 
     protected static ?string $activeNavigationIcon = 'heroicon-s-user';
 
+    protected static ?string $recordTitleAttribute = 'first_name';
+
     public static function getNavigationGroup(): ?string
     {
         return __('user_fields.patients');

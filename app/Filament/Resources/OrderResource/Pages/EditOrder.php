@@ -10,6 +10,11 @@ class EditOrder extends EditRecord
 {
     protected static string $resource = OrderResource::class;
 
+    public static function shouldRegisterSpotlight(): bool
+    {
+        return false;
+    }
+
     protected function getHeaderActions(): array
     {
         return [];

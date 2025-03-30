@@ -10,6 +10,11 @@ class EditCart extends EditRecord
 {
     protected static string $resource = CartResource::class;
 
+    public static function shouldRegisterSpotlight(): bool
+    {
+        return false;
+    }
+
     protected function getHeaderActions(): array
     {
         return [

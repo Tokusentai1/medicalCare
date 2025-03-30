@@ -21,6 +21,7 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Swis\Filament\Backgrounds\FilamentBackgroundsPlugin;
 use Swis\Filament\Backgrounds\ImageProviders\MyImages;
 use Rmsramos\Activitylog\ActivitylogPlugin;
+use pxlrbt\FilamentSpotlight\SpotlightPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -60,6 +61,7 @@ class AdminPanelProvider extends PanelProvider
                     ->authorize(
                         fn() => in_array('admin', Auth::guard('employee')->user()->role),
                     ),
+                SpotlightPlugin::make(),
             ])
             ->middleware([
                 EncryptCookies::class,

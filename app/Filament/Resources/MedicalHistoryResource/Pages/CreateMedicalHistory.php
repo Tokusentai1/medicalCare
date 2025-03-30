@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateMedicalHistory extends CreateRecord
 {
     protected static string $resource = MedicalHistoryResource::class;
+
+    public static function shouldRegisterSpotlight(): bool
+    {
+        return false;
+    }
 }

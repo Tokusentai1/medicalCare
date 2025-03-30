@@ -49,6 +49,8 @@ class CategoryResource extends Resource
         return 2;
     }
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(Form $form): Form
     {
         return $form

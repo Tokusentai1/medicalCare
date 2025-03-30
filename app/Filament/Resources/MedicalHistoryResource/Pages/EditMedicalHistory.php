@@ -10,6 +10,11 @@ class EditMedicalHistory extends EditRecord
 {
     protected static string $resource = MedicalHistoryResource::class;
 
+    public static function shouldRegisterSpotlight(): bool
+    {
+        return false;
+    }
+
     protected function getHeaderActions(): array
     {
         return [

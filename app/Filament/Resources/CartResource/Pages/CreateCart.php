@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateCart extends CreateRecord
 {
     protected static string $resource = CartResource::class;
+
+    public static function shouldRegisterSpotlight(): bool
+    {
+        return false;
+    }
 }

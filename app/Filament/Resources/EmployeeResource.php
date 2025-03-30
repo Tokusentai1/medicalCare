@@ -51,6 +51,8 @@ class EmployeeResource extends Resource
         return 1;
     }
 
+    protected static ?string $recordTitleAttribute = 'first_name';
+
     public static function form(Form $form): Form
     {
         return $form
