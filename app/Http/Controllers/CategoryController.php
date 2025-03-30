@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    /** 
+     * Get all categories
+     */
     public function getAllCategories()
     {
         $categories = Category::select('name', 'picture')->get()->map(function ($category) {
@@ -24,6 +27,9 @@ class CategoryController extends Controller
         );
     }
 
+    /** 
+     * Display category by id
+     */
     public function getCategory(int $id)
     {
         $category = Category::find($id);
@@ -54,6 +60,9 @@ class CategoryController extends Controller
         );
     }
 
+    /** 
+     * Search category by name
+     */
     public function searchCategory(string $name)
     {
         $category = Category::where('name', 'like', '%' . $name . '%')->get();

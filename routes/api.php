@@ -21,6 +21,8 @@ Route::apiResource('user', UserController::class)->only('show', 'update', 'destr
 
 Route::apiResource('medicine', MedicineController::class)->only('index', 'show');
 
+Route::get('searchMedicine/{name}', [MedicineController::class, 'searchMedicine']);
+
 Route::apiResource('medical-history', MedicalHistoryController::class)->only('store', 'show', 'update', 'destroy');
 
 Route::get('cart/{id}', [CartController::class, 'getCart']);
@@ -40,5 +42,3 @@ Route::get('categories', [CategoryController::class, 'getAllCategories']);
 Route::get('category/{id}', [CategoryController::class, 'getCategory']);
 
 Route::get('searchCategory/{name}', [CategoryController::class, 'searchCategory']);
-
-Route::get('searchMedicine/{name}', [MedicineController::class, 'searchMedicine']);

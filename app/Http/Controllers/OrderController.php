@@ -42,6 +42,9 @@ class OrderController extends Controller
         ]);
     }
 
+    /**
+     * Display the specified order via order id.
+     */
     public function getOrder(int $id)
     {
         $order = Order::with('cart.medicines')->find($id);

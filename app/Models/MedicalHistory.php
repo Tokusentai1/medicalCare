@@ -19,6 +19,15 @@ class MedicalHistory extends Model
         'updated_at',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'allergies' => 'array',
+            'previous_surgeries' => 'array',
+            'past_medical_condition' => 'array',
+        ];
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

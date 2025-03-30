@@ -60,6 +60,9 @@ class MedicineController extends Controller
         );
     }
 
+    /**
+     * Search the specified medicine via medicine name.
+     */
     public function searchMedicine(string $name)
     {
         $medicine = Medicine::where('brand_name', 'like', '%' . $name . '%')->get();

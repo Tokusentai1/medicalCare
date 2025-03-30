@@ -14,4 +14,5 @@ return [
     'patient' => 'Patient',
     'orders' => 'Orders',
     'age' => 'Age',
+    'address' => 'Address',
 ];

@@ -58,9 +58,9 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('first_name')->required()->label(__('user_fields.first_name')),
                 Forms\Components\TextInput::make('last_name')->required()->label(__('user_fields.last_name')),
-                Forms\Components\TextInput::make('email')->email()->required()->label(__('user_fields.email'))->unique('users', 'email'),
+                Forms\Components\TextInput::make('email')->email()->required()->label(__('user_fields.email'))->unique('users', 'email', ignoreRecord: true),
                 Forms\Components\TextInput::make('password')->password()->required()->label(__('user_fields.password')),
-                Forms\Components\TextInput::make('phone_number')->tel()->required()->label(__('user_fields.phone_number'))->unique('users', 'phone_number'),
+                Forms\Components\TextInput::make('phone_number')->tel()->required()->label(__('user_fields.phone_number'))->unique('users', 'phone_number', ignoreRecord: true),
                 Forms\Components\Select::make('gender')->options(
                     [
                         'male' =>   __('user_fields.male'),
@@ -68,6 +68,7 @@ class UserResource extends Resource
                     ]
                 )->required()->label(__('user_fields.gender')),
                 Forms\Components\DatePicker::make('birth_date')->required()->label(__('user_fields.birth_date')),
+                Forms\Components\TextInput::make('address')->required()->label(__('user_fields.address')),
             ]);
     }
 
@@ -79,6 +80,7 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('email')->icon('heroicon-o-envelope')->iconColor('primary')->label('Email')->label(__('user_fields.email')),
                 Tables\Columns\TextColumn::make('phone_number')->icon('heroicon-o-phone')->iconColor('primary')->label('Phone Number')->searchable()->label(__('user_fields.phone_number')),
                 Tables\Columns\TextColumn::make('gender')->icon('heroicon-o-face-smile')->iconColor('primary')->label('Gender')->label(__('user_fields.gender')),
+                Tables\Columns\TextColumn::make('address')->icon('heroicon-o-map-pin')->iconColor('primary')->label('Address')->label(__('user_fields.address')),
                 // For Birth Date Column
                 Tables\Columns\TextColumn::make('birth_date')
                     ->icon('heroicon-o-calendar')

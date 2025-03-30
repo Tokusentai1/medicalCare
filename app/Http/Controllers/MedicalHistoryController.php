@@ -18,9 +18,9 @@ class MedicalHistoryController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'allergies' => 'sometimes|nullable',
-                'previous_surgeries' => 'sometimes|nullable',
-                'past_medical_condition' => 'sometimes|nullable',
+                'allergies' => 'sometimes|nullable|array',
+                'previousSurgeries' => 'sometimes|nullable|array',
+                'pastMedicalConditions' => 'sometimes|nullable|array',
                 'user_id' => 'required|exists:users,id',
             ]
         );
@@ -37,8 +37,8 @@ class MedicalHistoryController extends Controller
         } else {
             $medical_history = new MedicalHistory();
             $medical_history->allergies = $request->allergies;
-            $medical_history->previous_surgeries = $request->previous_surgeries;
-            $medical_history->past_medical_condition = $request->past_medical_condition;
+            $medical_history->previous_surgeries = $request->previousSurgeries;
+            $medical_history->past_medical_condition = $request->pastMedicalConditions;
             $medical_history->user_id = $request->user_id;
             $medical_history->save();
 
@@ -89,9 +89,9 @@ class MedicalHistoryController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'allergies' => 'sometimes|nullable|string',
-                'previous_surgeries' => 'sometimes|nullable|string',
-                'past_medical_condition' => 'sometimes|nullable|string',
+                'allergies' => 'sometimes|nullable|array',
+                'previousSurgeries' => 'sometimes|nullable|array',
+                'pastMedicalConditions' => 'sometimes|nullable|array',
             ]
         );
 
@@ -119,7 +119,7 @@ class MedicalHistoryController extends Controller
             );
         }
 
-        $medical_history->fill(array_filter($request->only(['allergies', 'previous_surgeries', 'past_medical_condition']), function ($value) {
+        $medical_history->fill(array_filter($request->only(['allergies', 'previousSurgeries', 'pastMedicalConditions']), function ($value) {
             return $value !== null;
         }));
 

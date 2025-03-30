@@ -9,6 +9,7 @@ use App\Models\Medicine;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -17,15 +18,28 @@ class CartController extends Controller
      */
     public function addToCart(Request $request)
     {
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required|integer|exists:users,id',
+                'medicine_id' => 'required|integer|exists:medicines,id',
+                'quantity' => 'required|integer|min:1'
+            ]
+        );
+
+        if ($validation->fails()) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "statusCode" => 400,
+                    "error" => $validation->errors(),
+                    "result" => null
+                ]
+            );
+        }
+
         $user = User::find($request->user_id);
         $medicine = Medicine::find($request->medicine_id);
-
-        if (!$user) {
-            return response()->json(["success" => false, "statusCode" => 404, "error" => "User not found", "result" => null]);
-        }
-        if (!$medicine) {
-            return response()->json(["success" => false, "statusCode" => 404, "error" => "Medicine not found", "result" => null]);
-        }
 
         DB::beginTransaction();
 
@@ -52,7 +66,7 @@ class CartController extends Controller
     }
 
     /**
-     * Get the active cart for a user.
+     * Get the active cart for a user via user id if the cart exists.
      */
     public function getCart($id)
     {
@@ -95,15 +109,26 @@ class CartController extends Controller
      */
     public function removeMedicine(Request $request)
     {
-        $user = User::find($request->user_id);
-        if (!$user) {
-            return response()->json([
-                "success" => false,
-                "statusCode" => 404,
-                "error" => "User not found",
-                "result" => null
-            ]);
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required|integer|exists:users,id',
+                'medicine_id' => 'required|integer|exists:medicines,id',
+            ]
+        );
+
+        if ($validation->fails()) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "statusCode" => 400,
+                    "error" => $validation->errors(),
+                    "result" => null
+                ]
+            );
         }
+
+        $user = User::find($request->user_id);
 
         $cart = $user->carts()->where('active', true)->first();
         if (!$cart) {
@@ -154,7 +179,7 @@ class CartController extends Controller
     }
 
     /**
-     * Complete purchase (checkout) and create an order.
+     * Complete purchase (checkout) and create an order via user id.
      */
     public function checkout(int $id)
     {
