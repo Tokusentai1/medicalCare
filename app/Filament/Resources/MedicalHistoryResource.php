@@ -82,14 +82,14 @@ class MedicalHistoryResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('sendEmail')
-                    ->label('Send Email')
+                    ->label(__('medical_history_fields.send email'))
                     ->icon('heroicon-o-envelope')
                     ->form([
                         Forms\Components\Textarea::make('message')
-                            ->label('Email Message')
+                            ->label(__('medical_history_fields.message'))
                             ->required(),
                     ])
-                    ->modalHeading('Send Email to User')
+                    ->modalHeading(__('medical_history_fields.send user'))
                     ->action(function ($record, array $data) {
                         $record->load('user');
 
@@ -99,7 +99,7 @@ class MedicalHistoryResource extends Resource
                         Mail::to($userEmail)->send(new MedicationAlertMail($message));
 
                         Notification::make()
-                            ->title('Email sent to user')
+                            ->title(__('medical_history_fields.email sent successfully'))
                             ->success()
                             ->send();
                     })
