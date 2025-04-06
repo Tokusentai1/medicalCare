@@ -12,18 +12,13 @@ class CategoryController extends Controller
      */
     public function getAllCategories()
     {
-        $categories = Category::select('name', 'picture')->get()->map(function ($category) {
+        $categories = Category::select('id', 'name', 'picture')->get()->map(function ($category) {
             $category->picture = url('storage/categoryImages/' . $category->picture);
             return $category;
         });
 
         return response()->json(
-            [
-                "success" => true,
-                "statusCode" => 200,
-                "error" => null,
-                "result" => $categories
-            ]
+            $categories
         );
     }
 

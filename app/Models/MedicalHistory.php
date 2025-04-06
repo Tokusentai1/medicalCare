@@ -11,6 +11,7 @@ class MedicalHistory extends Model
         'allergies',
         'previous_surgeries',
         'past_medical_condition',
+        'medications',
         'user_id',
     ];
 
@@ -25,6 +26,7 @@ class MedicalHistory extends Model
             'allergies' => 'array',
             'previous_surgeries' => 'array',
             'past_medical_condition' => 'array',
+            'medications' => 'array',
         ];
     }
 

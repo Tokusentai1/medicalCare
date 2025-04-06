@@ -44,8 +44,8 @@ class AppServiceProvider extends ServiceProvider
             });
 
         // for ngrok so that scramble can work  
-        // if (app()->environment('local')) {
-        //     URL::forceScheme('https');
-        // }
+        //if (app()->environment('local')) {
+        //    URL::forceScheme('https');
+        //}
     }
 }

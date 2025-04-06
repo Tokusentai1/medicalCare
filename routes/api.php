@@ -25,6 +25,8 @@ Route::get('searchMedicine/{name}', [MedicineController::class, 'searchMedicine'
 
 Route::apiResource('medical-history', MedicalHistoryController::class)->only('store', 'show', 'update', 'destroy');
 
+Route::post('user-medicines', [MedicalHistoryController::class, 'addUserMedicines']);
+
 Route::get('cart/{id}', [CartController::class, 'getCart']);
 
 Route::post('cart/add', [CartController::class, 'addToCart']);

@@ -187,8 +187,9 @@ class UserController extends Controller
                         'id' => $user->id,
                         'name' => $user->fullName,
                         'email' => $user->email,
-                        'phone number' => $user->phone_number,
+                        'phone' => $user->phone_number,
                         'gender' => $user->gender,
+                        'address' => $user->address,
                         'birth date' => $user->birth_date
                     ],
                 ]

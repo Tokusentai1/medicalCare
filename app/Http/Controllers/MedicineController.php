@@ -12,23 +12,28 @@ class MedicineController extends Controller
      */
     public function index()
     {
-        $medicines = Medicine::select('brand_name', 'image', 'price')
+        $medicines = Medicine::with('category:id,name') // eager load only id and name
+            ->select('id', 'brand_name', 'image', 'price', 'dosage', 'dosage_form', 'category_id') // don't forget to include category_id
             ->get()
             ->map(function ($medicine) {
-                $medicine->image = url('storage/images/' . $medicine->image);
-                return $medicine;
+                return [
+                    'id' => $medicine->id,
+                    'Name' => $medicine->brand_name,
+                    'image' => url('storage/images/' . $medicine->image),
+                    'price' => $medicine->price,
+                    'dosage' => $medicine->dosage,
+                    'dosageForm' => $medicine->dosage_form,
+                    'categoryName' => $medicine->category->name ?? null, // use null-safe in case no category
+                ];
             });
 
-        return response()->json(
-            [
-                "success" => true,
-                "statusCode" => 200,
-                "error" => null,
-                "result" => $medicines
-            ]
-        );
+        return response()->json([
+            "success" => true,
+            "statusCode" => 200,
+            "error" => null,
+            "result" => $medicines
+        ]);
     }
-
 
     /**
      * Display the specified medicine via medicine id.

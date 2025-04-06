@@ -28,6 +28,7 @@ class MedicalHistoriesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('allergies')->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.allergies')),
                 Tables\Columns\TextColumn::make('previous_surgeries')->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.previous surgeries')),
                 Tables\Columns\TextColumn::make('past_medical_condition')->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.past medical condition')),
+                Tables\Columns\TextColumn::make('medications')->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.medications')),
             ])
             ->filters([])
             ->headerActions([])

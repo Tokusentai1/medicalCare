@@ -6,6 +6,7 @@ use App\Models\MedicalHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class MedicalHistoryController extends Controller
 {
@@ -163,5 +164,63 @@ class MedicalHistoryController extends Controller
                 "result" => "Medical history deleted"
             ]
         );
+    }
+
+    /**
+     * Add the Medicines that the user takes
+     */
+    public function addUserMedicines(Request $request)
+    {
+        // Step 1: Validate input
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'user_id' => 'required|exists:users,id',
+                'medicines' => 'required|array',
+            ]
+        );
+
+        Log::info('Finished validation part of the code, now checking for errors');
+
+        if ($validation->fails()) {
+            Log::error('Validation errors:', $validation->errors()->toArray());
+            return response()->json([
+                "success" => false,
+                "statusCode" => 400,
+                "error" => $validation->errors(),
+                "result" => null
+            ]);
+        }
+
+        Log::info('Validation passed. Proceeding to fetch or create medical history.');
+
+        // Step 2: Get or create the user's medical history
+        $medicalHistory = MedicalHistory::firstOrCreate(
+            ['user_id' => $request->user_id],
+            ['medications' => []] // Default if no record exists
+        );
+
+        Log::info('Medical history retrieved or created successfully.');
+
+        // Step 3: Normalize and deduplicate medications
+        $existingMeds = array_map(fn($item) => strtolower(trim($item)), $medicalHistory->medications ?? []);
+        $newMeds = array_map(fn($item) => strtolower(trim($item)), $request->medicines);
+
+        $mergedMeds = array_unique(array_merge($existingMeds, $newMeds));
+
+        $medicalHistory->medications = $mergedMeds;
+
+        // Step 4: Save the updated medical history
+        $medicalHistory->save();
+
+        Log::info('Medical history updated successfully.');
+
+        // Step 5: Return the response
+        return response()->json([
+            "success" => true,
+            "statusCode" => 200,
+            "error" => null,
+            "result" => $medicalHistory
+        ]);
     }
 }

@@ -14,6 +14,10 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use App\Mail\MedicationAlertMail;
+use Illuminate\Support\Facades\Mail;
+use Filament\Notifications\Notification;
+
 class MedicalHistoryResource extends Resource
 {
     protected static ?string $model = MedicalHistory::class;
@@ -68,15 +72,39 @@ class MedicalHistoryResource extends Resource
                     ->icon('heroicon-o-cake')
                     ->iconColor('primary')
                     ->label(__('user_fields.age')),
-                Tables\Columns\TextColumn::make('allergies')->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.allergies')),
-                Tables\Columns\TextColumn::make('previous_surgeries')->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.previous surgeries')),
-                Tables\Columns\TextColumn::make('past_medical_condition')->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.past medical condition')),
-
+                Tables\Columns\TextColumn::make('allergies')->listWithLineBreaks()->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.allergies')),
+                Tables\Columns\TextColumn::make('previous_surgeries')->listWithLineBreaks()->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.previous surgeries')),
+                Tables\Columns\TextColumn::make('past_medical_condition')->listWithLineBreaks()->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.past medical condition')),
+                Tables\Columns\TextColumn::make('medications')->listWithLineBreaks()->icon('heroicon-o-eye-dropper')->iconColor('primary')->label(__('medical_history_fields.medications')),
             ])
             ->filters([
                 //
             ])
-            ->actions([])
+            ->actions([
+                Tables\Actions\Action::make('sendEmail')
+                    ->label('Send Email')
+                    ->icon('heroicon-o-envelope')
+                    ->form([
+                        Forms\Components\Textarea::make('message')
+                            ->label('Email Message')
+                            ->required(),
+                    ])
+                    ->modalHeading('Send Email to User')
+                    ->action(function ($record, array $data) {
+                        $record->load('user');
+
+                        $userEmail = $record->user->email;
+                        $message = $data['message'];
+
+                        Mail::to($userEmail)->send(new MedicationAlertMail($message));
+
+                        Notification::make()
+                            ->title('Email sent to user')
+                            ->success()
+                            ->send();
+                    })
+                    ->color('primary'),
+            ])
             ->bulkActions([]);
     }
 
