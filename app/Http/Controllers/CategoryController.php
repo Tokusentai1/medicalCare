@@ -12,10 +12,7 @@ class CategoryController extends Controller
      */
     public function getAllCategories()
     {
-        $categories = Category::select('id', 'name', 'picture')->get()->map(function ($category) {
-            $category->picture = url('storage/categoryImages/' . $category->picture);
-            return $category;
-        });
+        $categories = Category::select('id', 'name')->get();
 
         return response()->json(
             $categories
@@ -40,10 +37,7 @@ class CategoryController extends Controller
             );
         }
 
-        $medicines = $category->medicines()->get()->map(function ($medicine) {
-            $medicine->image = url('storage/images/' . $medicine->image);
-            return $medicine;
-        });
+        $medicines = $category->medicines()->get();
 
         return response()->json(
             [
@@ -72,11 +66,6 @@ class CategoryController extends Controller
                 ]
             );
         };
-
-        $category->map(function ($category) {
-            $category->picture = url('storage/categoryImages/' . $category->picture);
-            return $category;
-        });
 
         return response()->json(
             [

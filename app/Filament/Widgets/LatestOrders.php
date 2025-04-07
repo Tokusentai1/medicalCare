@@ -30,22 +30,25 @@ class LatestOrders extends BaseWidget
             ->defaultSort('created_at', 'desc')
             ->columns([
                 Tables\Columns\TextColumn::make('user.fullName')->icon('heroicon-o-user')->iconColor('primary')->label(__('user_fields.full_name')),
-                Tables\Columns\TextColumn::make('cart.medicines.brand_name')
-                    ->listWithLineBreaks()
+                Tables\Columns\TextColumn::make('medicines')
                     ->icon('heroicon-o-tag')
                     ->iconColor('primary')
-                    ->label(__('medicine_fields.brand_name')),
-                Tables\Columns\TextColumn::make('cart')
-                    ->label(__('cart_fields.quantity'))
-                    ->getStateUsing(function (Order $order) {
-                        return $order->cart->medicines->map(function ($medicine) {
-                            return "{$medicine->pivot->quantity}";
-                        })->toArray();
+                    ->label(__('medicine_fields.brand_name'))
+                    ->formatStateUsing(function ($state) {
+                        $items = is_string($state) ? explode(',', $state) : (is_array($state) ? $state : []);
+                        return implode('<br>', $items);
                     })
-                    ->listWithLineBreaks()
+                    ->html(),
+                Tables\Columns\TextColumn::make('quantities')
+                    ->label(__('cart_fields.quantity'))
                     ->icon('heroicon-o-circle-stack')
-                    ->iconColor('primary'),
-                Tables\Columns\TextColumn::make('cart.total_price')
+                    ->iconColor('primary')
+                    ->formatStateUsing(function ($state) {
+                        $items = is_string($state) ? explode(',', $state) : (is_array($state) ? $state : []);
+                        return implode('<br>', $items);
+                    })
+                    ->html(),
+                Tables\Columns\TextColumn::make('total_price')
                     ->money('SYP')->label(__('cart_fields.total price')),
                 Tables\Columns\TextColumn::make('status')
                     ->icon(fn($state) => match ($state) {

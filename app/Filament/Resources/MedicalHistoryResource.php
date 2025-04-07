@@ -54,7 +54,9 @@ class MedicalHistoryResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([]);
+            ->schema([
+                Forms\Components\TextInput::make('medications')->label(__('medical_history_fields.medications'))->icon('heroicon-o-eye-dropper')->iconColor('primary'),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -81,12 +83,14 @@ class MedicalHistoryResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('sendEmail')
                     ->label(__('medical_history_fields.send email'))
                     ->icon('heroicon-o-envelope')
                     ->form([
                         Forms\Components\Textarea::make('message')
                             ->label(__('medical_history_fields.message'))
+                            ->autosize()
                             ->required(),
                     ])
                     ->modalHeading(__('medical_history_fields.send user'))
@@ -119,6 +123,7 @@ class MedicalHistoryResource extends Resource
     {
         return [
             'index' => Pages\ListMedicalHistories::route('/'),
+            'edit' => Pages\EditMedicalHistory::route('/{record}/edit'),
         ];
     }
 }

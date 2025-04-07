@@ -22,4 +22,7 @@ return [
     'inject' => 'حقن',
     'medicine_type' => 'أنواع الدواء',
     'save' => 'اضافة',
+    'category_medicines' => "الفئات و الأدوية",
+    'yes' => 'نعم',
+    'no' => 'لا',
 ];

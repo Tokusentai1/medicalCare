@@ -112,7 +112,23 @@ class MedicineResource extends Resource
                     ->falseIcon('heroicon-o-x-circle')
                     ->toggleable(),
             ])
-            ->filters([])
+            ->filters([
+                Tables\Filters\SelectFilter::make('rocheta')
+                    ->options([
+                        1 => __('medicine_fields.yes'),
+                        0 => __('medicine_fields.no'),
+                    ])
+                    ->label(__('medicine_fields.rocheta'))
+                    ->attribute('rocheta'),
+                Tables\Filters\SelectFilter::make('dosage_form')
+                    ->options([
+                        'swallow' => __('medicine_fields.Swallow'),
+                        'drink' => __('medicine_fields.drink'),
+                        'inject' => __('medicine_fields.inject'),
+                    ])
+                    ->label(__('medicine_fields.dosage_form'))
+                    ->attribute('dosage_form'),
+            ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

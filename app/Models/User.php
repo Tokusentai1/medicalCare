@@ -24,10 +24,12 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'email',
+        'password',
         'phone_number',
         'gender',
         'birth_date',
         'password',
+        'address',
     ];
 
     /**
@@ -36,7 +38,6 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
         'email_verified_at',
         'remember_token',
         'created_at',

@@ -62,7 +62,6 @@ class CategoryResource extends Resource
                     ->hideOnCreate()
                     ->columnSpan(2),
                 Forms\Components\TextInput::make('name')->required()->label(__('category_fields.name')),
-                Forms\Components\FileUpload::make('picture')->required()->label(__('category_fields.picture'))->disk('categories'),
             ]);
     }
 
@@ -71,11 +70,11 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')->label(__('category_fields.name'))->searchable()->toggleable()->icon('heroicon-o-tag')->iconColor('primary'),
-                Tables\Columns\ImageColumn::make('picture')->label(__('category_fields.picture'))->toggleable()->disk('categories'),
             ])
             ->filters([])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
                 ActivityLogTimelineTableAction::make(__('employee_fields.activity_log'))
                     ->visible(
                         fn() => in_array('admin', Auth::guard('employee')->user()->role),

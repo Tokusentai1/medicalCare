@@ -22,4 +22,7 @@ return [
     'inject' => 'Inject',
     'medicine_type' => 'Medicine Types',
     'save' => 'Submit',
+    'category_medicines' => 'Category Medicines',
+    'yes' => 'Yes',
+    'no' => 'No',
 ];

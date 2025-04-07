@@ -61,9 +61,10 @@ class UserController extends Controller
                     "error" => null,
                     "result" => [
                         'id' => $user->id,
-                        'name' => $user->fullName,
+                        'first_name' => $user->first_name,
+                        'last_name' => $user->last_name,
                         'email' => $user->email,
-                        'phone number' => $user->phone_number,
+                        'phone' => $user->phone_number,
                         'gender' => $user->gender,
                         'birth date' => $user->birth_date,
                         'address' => $user->address,
@@ -185,7 +186,8 @@ class UserController extends Controller
                     "error" => null,
                     "result" => [
                         'id' => $user->id,
-                        'name' => $user->fullName,
+                        'first_name' => $user->first_name,
+                        'last_name' => $user->last_name,
                         'email' => $user->email,
                         'phone' => $user->phone_number,
                         'gender' => $user->gender,
@@ -210,6 +212,7 @@ class UserController extends Controller
      */
     public function update(Request $request, int $id)
     {
+        logger()->info('begin update');
         $validation = Validator::make(
             $request->all(),
             [
@@ -225,6 +228,7 @@ class UserController extends Controller
         );
 
         if ($validation->fails()) {
+            logger()->error('Validation errors:', $validation->errors()->toArray());
             return response()->json(
                 [
                     "success" => false,
@@ -235,9 +239,12 @@ class UserController extends Controller
             );
         }
 
+        logger()->info('finished validation part of the code now to check if user exists');
         $user = User::find($id);
 
         if ($user) {
+
+            logger()->info('user found now to update');
             $user->update($request->all());
 
             return response()->json(

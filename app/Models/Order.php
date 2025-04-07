@@ -15,11 +15,22 @@ class Order extends Model
         'user_id',
         'cart_id',
         'status',
+        'medicines',
+        'quantities',
+        'total_price'
     ];
 
     protected $hidden = [
         'updated_at',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'medicines' => 'array',
+            'quantities' => 'array',
+        ];
+    }
 
     public function getCreatedAtAttribute($value)
     {

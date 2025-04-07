@@ -44,3 +44,5 @@ Route::get('categories', [CategoryController::class, 'getAllCategories']);
 Route::get('category/{id}', [CategoryController::class, 'getCategory']);
 
 Route::get('searchCategory/{name}', [CategoryController::class, 'searchCategory']);
+
+Route::post('checkout/{id}', [OrderController::class, 'create']);

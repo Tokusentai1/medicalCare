@@ -13,7 +13,6 @@ class Category extends Model
 
     protected $fillable = [
         'name',
-        'picture',
     ];
 
     protected $hidden = [
@@ -29,6 +28,6 @@ class Category extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['name', 'picture']);
+            ->logOnly(['name']);
     }
 }

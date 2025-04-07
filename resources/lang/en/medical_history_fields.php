@@ -10,7 +10,7 @@ return [
     'message' => 'Message',
     'send user' => 'Send Message to Patient',
     'email sent successfully' => 'Email sent successfully',
-    'alert' => 'Important Medication Alert',
-    'alert content' => 'The Alert Content:',
+    'alert' => 'Medication Alert',
+    'alert content' => 'We would like to inform you of a conflict between the medication',
     'thanks' => 'Thanks',
 ];

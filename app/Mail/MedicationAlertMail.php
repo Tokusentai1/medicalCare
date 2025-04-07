@@ -29,7 +29,7 @@ class MedicationAlertMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Important Medication Alert'
+            subject: 'Medication Alert'
         );
     }
 

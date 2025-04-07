@@ -76,22 +76,25 @@ class OrderResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('user.fullName')->icon('heroicon-o-user')->iconColor('primary')->label(__('user_fields.full_name')),
-                Tables\Columns\TextColumn::make('cart.medicines.brand_name')
-                    ->listWithLineBreaks()
+                Tables\Columns\TextColumn::make('medicines')
                     ->icon('heroicon-o-tag')
                     ->iconColor('primary')
-                    ->label(__('medicine_fields.brand_name')),
-                Tables\Columns\TextColumn::make('cart')
-                    ->label(__('cart_fields.quantity'))
-                    ->getStateUsing(function (Order $order) {
-                        return $order->cart->medicines->map(function ($medicine) {
-                            return "{$medicine->pivot->quantity}";
-                        })->toArray();
+                    ->label(__('medicine_fields.brand_name'))
+                    ->formatStateUsing(function ($state) {
+                        $items = is_string($state) ? explode(',', $state) : (is_array($state) ? $state : []);
+                        return implode('<br>', $items);
                     })
-                    ->listWithLineBreaks()
+                    ->html(),
+                Tables\Columns\TextColumn::make('quantities')
+                    ->label(__('cart_fields.quantity'))
                     ->icon('heroicon-o-circle-stack')
-                    ->iconColor('primary'),
-                Tables\Columns\TextColumn::make('cart.total_price')
+                    ->iconColor('primary')
+                    ->formatStateUsing(function ($state) {
+                        $items = is_string($state) ? explode(',', $state) : (is_array($state) ? $state : []);
+                        return implode('<br>', $items);
+                    })
+                    ->html(),
+                Tables\Columns\TextColumn::make('total_price')
                     ->money('SYP')->label(__('cart_fields.total price')),
                 Tables\Columns\TextColumn::make('status')
                     ->icon(fn($state) => match ($state) {
@@ -102,7 +105,7 @@ class OrderResource extends Resource
                     ->color(fn($state) => match ($state) {
                         'pending' => 'warning',
                         'completed' => 'success',
-                        default => 'primary',
+                        default => 'danger',
                     })
                     ->label(__('order_fields.status')),
                 Tables\Columns\TextColumn::make('created_at')->dateTime()->icon('heroicon-o-calendar')->iconColor('primary')->label(__('order_fields.date')),
@@ -129,9 +132,7 @@ class OrderResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
