@@ -20,9 +20,9 @@ return [
     'Swallow' => 'بلع',
     'drink' => 'شرب',
     'inject' => 'حقن',
-    'medicine_type' => 'أنواع الدواء',
+    'medicine_type' => 'أشكال الأدوية',
     'save' => 'اضافة',
-    'category_medicines' => "الفئات و الأدوية",
+    'category_medicines' => "الأدوية حسب الفئة",
     'yes' => 'نعم',
     'no' => 'لا',
 ];

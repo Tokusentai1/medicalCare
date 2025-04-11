@@ -20,9 +20,9 @@ return [
     'Swallow' => 'Swallow',
     'drink' => 'Drink',
     'inject' => 'Inject',
-    'medicine_type' => 'Medicine Types',
+    'medicine_type' => 'Medicine Forms',
     'save' => 'Submit',
-    'category_medicines' => 'Category Medicines',
+    'category_medicines' => 'Medicines per Category',
     'yes' => 'Yes',
     'no' => 'No',
 ];

@@ -60,8 +60,8 @@ class EmployeeResource extends Resource
                 GazeBanner::make()
                     ->lock()
                     ->canTakeControl(fn() => in_array('admin', Auth::guard('employee')->user()->role))
-                    ->pollTimer(7)
-                    ->columnSpan(2),
+                    ->pollTimer(5)
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('first_name')->required()->label(__('employee_fields.first_name')),
                 Forms\Components\TextInput::make('last_name')->required()->label(__('employee_fields.last_name')),
                 FormS\Components\TextInput::make('email')->email()->required()->label(__('employee_fields.email'))->unique('employees', 'email', ignoreRecord: true),

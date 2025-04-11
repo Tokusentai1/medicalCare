@@ -58,9 +58,8 @@ class CategoryResource extends Resource
                 GazeBanner::make()
                     ->lock()
                     ->canTakeControl(fn() => in_array('admin', Auth::guard('employee')->user()->role))
-                    ->pollTimer(7)
-                    ->hideOnCreate()
-                    ->columnSpan(2),
+                    ->pollTimer(5)
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('name')->required()->label(__('category_fields.name')),
             ]);
     }

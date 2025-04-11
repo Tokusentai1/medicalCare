@@ -59,8 +59,9 @@ class MedicineResource extends Resource
                 GazeBanner::make()
                     ->lock()
                     ->canTakeControl(fn() => in_array('admin', Auth::guard('employee')->user()->role))
-                    ->pollTimer(7)
-                    ->columnSpan(1),
+                    ->pollTimer(5)
+                    ->columnSpanFull()
+                    ->hideOnCreate(),
                 Wizard::make([
                     Wizard\Step::make(__('medicine_fields.step1'))->schema([
                         Forms\Components\TextInput::make('brand_name')->required()->label(__('medicine_fields.brand_name')),

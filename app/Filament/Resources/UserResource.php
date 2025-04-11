@@ -18,6 +18,8 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
+use DiscoveryDesign\FilamentGaze\Forms\Components\GazeBanner;
 
 class UserResource extends Resource
 {
@@ -58,6 +60,11 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
+                GazeBanner::make()
+                    ->lock()
+                    ->canTakeControl(fn() => in_array('admin', Auth::guard('employee')->user()->role))
+                    ->pollTimer(5)
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('first_name')->required()->label(__('user_fields.first_name')),
                 Forms\Components\TextInput::make('last_name')->required()->label(__('user_fields.last_name')),
                 Forms\Components\TextInput::make('email')->email()->required()->label(__('user_fields.email'))->unique('users', 'email', ignoreRecord: true),

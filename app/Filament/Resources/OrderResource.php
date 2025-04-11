@@ -57,9 +57,9 @@ class OrderResource extends Resource
                 GazeBanner::make()
                     ->lock()
                     ->canTakeControl(fn() => in_array('admin', Auth::guard('employee')->user()->role))
-                    ->pollTimer(7)
+                    ->pollTimer(5)
                     ->hideOnCreate()
-                    ->columnSpan(2),
+                    ->columnSpanFull(),
                 Forms\Components\Select::make('status')
                     ->options([
                         'pending' => __('order_fields.pending'),
