@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\PatientMedicineTakesNotification;
 use App\Models\MedicalHistory;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -215,7 +216,14 @@ class MedicalHistoryController extends Controller
 
         Log::info('Medical history updated successfully.');
 
-        // Step 5: Return the response
+
+        // Step 5: Fetch the user and pass the full name to the job
+        $user = User::find($request->user_id);
+
+        // Step 6: Run the Job with full name
+        PatientMedicineTakesNotification::dispatch($user);  // Pass the User object to the job
+
+        // Step 7: Return the response
         return response()->json([
             "success" => true,
             "statusCode" => 200,

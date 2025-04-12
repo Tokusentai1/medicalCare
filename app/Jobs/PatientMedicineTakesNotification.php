@@ -2,23 +2,26 @@
 
 namespace App\Jobs;
 
-use App\Models\Employee;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Filament\Notifications\Notification;
 use Filament\Notifications\Actions\Action;
-use Illuminate\Queue\SerializesModels;
+use App\Models\Employee;
+use App\Models\User;
 
-class SendOrderNotification implements ShouldQueue
+class PatientMedicineTakesNotification implements ShouldQueue
 {
     use Queueable, SerializesModels;
+
+    protected User $user;
 
     /**
      * Create a new job instance.
      */
-    public function __construct()
+    public function __construct(User $user)
     {
-        //
+        $this->user = $user;
     }
 
     /**
@@ -27,18 +30,18 @@ class SendOrderNotification implements ShouldQueue
     public function handle(): void
     {
         $employees = Employee::whereJsonContains('role', 'admin')
-            ->orWhereJsonContains('role', 'sales manager')
+            ->orWhereJsonContains('role', 'pharmacist')
             ->get();
 
         foreach ($employees as $emp) {
             Notification::make()
-                ->title('طلب جديد')
+                ->title('إضافة دواء جديد للمريض')
                 ->success()
-                ->body('تم اضافة طلب جديد الرجاء التحقق منه')
+                ->body('تمت إضافة دواء جديد للمريض ' . $this->user->fullName . '، الرجاء التحقق منه.')
                 ->actions([
-                    Action::make('معاينة  الطلب')
+                    Action::make('عرض')
                         ->button()
-                        ->url(env('APP_URL') . '/')
+                        ->url(env('APP_URL') . '/admin/medical-histories')
                         ->openUrlInNewTab(false),
                     Action::make('تحديد كمقروء')
                         ->button()

@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use DiscoveryDesign\FilamentGaze\Forms\Components\GazeBanner;
+use Rmsramos\Activitylog\Actions\ActivityLogTimelineTableAction;
 
 class UserResource extends Resource
 {
@@ -124,6 +125,9 @@ class UserResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                ActivityLogTimelineTableAction::make(__('employee_fields.activity_log'))->visible(
+                    fn() => in_array('admin', Auth::guard('employee')->user()->role),
+                ),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

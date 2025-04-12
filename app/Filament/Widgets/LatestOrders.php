@@ -7,9 +7,10 @@ use App\Models\Order;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
-
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+
+use Illuminate\Support\Facades\Auth;
 
 class LatestOrders extends BaseWidget
 {
@@ -75,7 +76,11 @@ class LatestOrders extends BaseWidget
                                 'canceled' => __('order_fields.canceled'),
                             ])
                             ->required(),
-                    ]),
+                    ])
+                    ->visible(function () {
+                        $employee = Auth::guard('employee')->user();
+                        return !empty(array_intersect(['admin', 'sales manager'], $employee->role ?? []));
+                    }),
             ]);
     }
 }

@@ -4,9 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class MedicalHistory extends Model
 {
+    use LogsActivity;
+
     protected $fillable = [
         'allergies',
         'previous_surgeries',
@@ -33,5 +37,11 @@ class MedicalHistory extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['allergies', 'previous_surgeries', 'past_medical_condition', 'medications']);
     }
 }
